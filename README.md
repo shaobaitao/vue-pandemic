@@ -1,5 +1,5 @@
 # vue-pandemic
-![demo](https://github.com/shaobaitao/vue-pandemic/blob/master/demo.png）
+![图片信息描述](https://github.com/shaobaitao/vue-pandemic/blob/master/demo.png)
 ## About
 ```
 Author : Ethan Shao
