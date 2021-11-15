@@ -1,11 +1,11 @@
 # vue-pandemic
 ![图片信息描述](https://github.com/shaobaitao/vue-pandemic/blob/master/demo.png)
+Demo : https://shaobaitao.cn/pandemic
 ## About
 ```
 Author : Ethan Shao
 Date : November 15, 2021
 API : Sina pandemic api
-Demo : https://shaobaitao.cn/pandemic
 ```
 
 ## Project setup
