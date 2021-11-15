@@ -1,4 +1,5 @@
 # vue-pandemic
+[](https://github.com/shaobaitao/vue-pandemic/blob/master/demo.png）
 ## About
 ```
 Author : Ethan Shao
