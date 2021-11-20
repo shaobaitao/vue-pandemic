@@ -1,0 +1,166 @@
+<template>
+  <div class="four-container">
+    <div class="BarChart" :id="id" :style="styles"></div>
+    <div class="fourBorder border1"></div>
+    <div class="fourBorder border2"></div>
+    <div class="fourBorder border3"></div>
+    <div class="fourBorder border4"></div>
+  </div>
+</template>
+<script>
+const echarts = require("echarts/lib/echarts");
+require("echarts/lib/component/tooltip");
+require("echarts/lib/component/grid");
+require("echarts/lib/component/legend");
+require("echarts/lib/chart/bar");
+
+export default {
+  name: "BarChart",
+  props: {
+    id: {
+      type: String,
+      default: "BarChart",
+    },
+    height: {
+      type: String,
+    },
+    width: {
+      type: String,
+    },
+    chartData: Array,
+  },
+  data() {
+    return {
+      styles: {
+        height: this.height,
+        width: this.width,
+      },
+      conturysList: [],
+      deathList: [],
+      conList: [],
+      cureList: [],
+      topTen: [],
+    };
+  },
+  mounted() {
+    this.draw();
+  },
+  methods: {
+    initData() {
+      this.chartData = this.chartData.reverse(
+        this.chartData.sort(this.compare("conNum"))
+      );
+      this.topTen = this.chartData.slice(0, 10);
+      this.topTen.forEach((item) => {
+        this.conList.push(item["conNum"]);
+        this.deathList.push(item["deathNum"]);
+        this.cureList.push(item["cureNum"]);
+        this.conturysList.push(item["name"]);
+      });
+    },
+    compare(property) {
+      return function (a, b) {
+        return a[property] - b[property];
+      };
+    },
+    draw() {
+      this.initData();
+      var chartDom = document.getElementById(this.id);
+      var myChart = echarts.init(chartDom);
+      var option = {
+        title: {
+          text: "世界疫情病例比例累计",
+          left: "center",
+          textStyle: {
+            color: "#450558",
+            textBorderColor: "#d984f3",
+            textBorderWidth: "2",
+            fontSize: 20,
+          },
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // Use axis to trigger tooltip
+            type: "shadow", // 'shadow' as default; can also be 'line' or 'shadow'
+          },
+        },
+        color: ["#ee44ee", "#8555a8", "#d984f3"],
+        legend: {
+          top: "bottom",
+          textStyle: {
+            color: "#d984f3",
+          },
+        },
+        grid: {
+          left: "3%",
+          right: "3%",
+          bottom: "3%",
+          containLabel: true,
+        },
+        xAxis: {
+          show: false,
+          type: "value",
+          axisLabel: {
+            textStyle: {
+              color: "#d984f3",
+            },
+          },
+        },
+        yAxis: {
+          type: "category",
+          data: this.conturysList,
+          inverse: true,
+          axisLabel: {
+            textStyle: {
+              color: "#d984f3",
+            },
+          },
+        },
+        series: [
+          {
+            name: "确诊总数",
+            type: "bar",
+            stack: "total",
+            label: {
+              show: false,
+            },
+            emphasis: {
+              focus: "series",
+            },
+            data: this.conList,
+          },
+          {
+            name: "死亡总数",
+            type: "bar",
+            stack: "total",
+            label: {
+              show: false,
+            },
+            emphasis: {
+              focus: "series",
+            },
+            data: this.deathList,
+          },
+          {
+            name: "治愈总数",
+            type: "bar",
+            stack: "total",
+            label: {
+              show: false,
+            },
+            emphasis: {
+              focus: "series",
+            },
+            data: this.cureList,
+          },
+        ],
+      };
+      option && myChart.setOption(option);
+    },
+  },
+};
+</script>
+
+<style lang="less" >
+</style>
