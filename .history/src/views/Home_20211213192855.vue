@@ -1,0 +1,108 @@
+<template>
+  <div class="home" v-if="allData.data">
+    <chart-border>
+      <china-card :allData="allData"></china-card>
+    </chart-border>
+    <chart-border>
+      <line-chart :chartData="allData.data.otherhistorylist"></line-chart>
+    </chart-border>
+    <chart-border>
+      <pie-chart :chartData="allData.data.otherlist"></pie-chart>
+    </chart-border>
+    <!-- <div class="topBanner">
+          <h1>{{ title }}</h1>
+          <h3>{{ allData.data.times }}</h3>
+    </div>-->
+    <ChinaChart class="chinaChart" :chartData="allData.data.list"></ChinaChart>
+    <chart-border>
+      <world-card :allData="allData"></world-card>
+    </chart-border>
+    <chart-border>
+      <gradient-line-chart :chartData="allData.data.historylist"></gradient-line-chart>
+    </chart-border>
+    <chart-border>
+      <bar-chart :chartData="allData.data.otherlist"></bar-chart>
+    </chart-border>
+  </div>
+</template>
+
+<script>
+import ChartBorder from "../components/ChartBorder";
+
+import ChinaCard from "@/components/ChinaCard";
+import WorldCard from "@/components/WorldCard";
+import BarChart from "@/components/BarChart";
+import ChinaChart from "@/components/ChinaChart";
+import LineChart from "@/components/LineChart";
+import PieChart from "@/components/PieChart";
+import GradientLineChart from "@/components/GradientLineChart";
+
+export default {
+  name: "Home",
+  components: {
+    ChartBorder,
+    ChinaCard,
+    WorldCard,
+    BarChart,
+    ChinaChart,
+    LineChart,
+    PieChart,
+    GradientLineChart,
+  },
+  data() {
+    return {
+      title: "新型冠状病毒疫情大数据展示系统",
+      allData: {},
+    };
+  },
+  methods: {
+    initData() {
+      this.$jsonp(
+        "https://news.sina.com.cn/project/fymap/ncp2020_full_data.json",
+        {
+          callbackName: "jsonpCallback",
+        }
+      );
+    },
+  },
+  mounted() {
+    this.initData();
+    window.jsoncallback = (data) => {
+      this.allData = data;
+    };
+  },
+};
+</script>
+
+<style lang="less">
+.home {
+  width: calc(100% - 60px);
+  height: calc(100% - 60px);
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-auto-flow: column dense;
+  gap: 30px;
+
+  grid-template-areas:
+    ". cc ."
+    ". cc ."
+    ". cc .";
+}
+.chinaChart{
+  grid-area: cc;
+}
+
+.topBanner {
+  padding-top: 20px;
+  h1 {
+    color: #450558;
+    -webkit-text-stroke: 1px #d984f3;
+  }
+  h3 {
+    color: #450558;
+    -webkit-text-stroke: 1px #d984f3;
+  }
+}
+</style>
